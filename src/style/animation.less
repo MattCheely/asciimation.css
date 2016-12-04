@@ -1,0 +1,23 @@
+.animation(@name, @width, @duration, @steps, @frames) {
+
+    @keyframes @name {
+      100% {
+          margin-left: unit(-1 * @width * @steps, ch);
+      }
+    }
+
+    @{name} {
+      font-family: monospace;
+      overflow: hidden;
+      display: inline-block;
+      white-space: pre;
+
+      width: unit(@width, ch);
+      &:before {
+        content: replace(replace(@frames, "\\", "\\", "g"), "\n", "\A ", "g");
+        display: inline-block;
+        animation: @name @duration steps(@steps) infinite;
+      }
+    }
+
+}

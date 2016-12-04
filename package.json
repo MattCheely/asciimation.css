@@ -1,0 +1,16 @@
+{
+  "name": "asciimation.css",
+  "version": "1.0.0",
+  "description": "A collection of pure CSS ASCII animations.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "matt.cheely@gmail.com",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-less": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "stupid-server": "^0.2.0"
+  }
+}
