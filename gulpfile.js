@@ -23,7 +23,7 @@ gulp.task('copy-demo', () => {
 
 gulp.task('default', ['main-css', 'copy-demo']);
 
-gulp.task('host', () => {
+gulp.task('host-watch', () => {
     stupidServer({path: path.join(__dirname, 'dist')}, () => {
         let watcher = gulp.watch(['src/**', 'index.html'], ['default']);
         watcher.on('change', (event) => {
@@ -31,3 +31,5 @@ gulp.task('host', () => {
         });
     });
 });
+
+gulp.task('host', ['default', 'host-watch']);
