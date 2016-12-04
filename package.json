@@ -11,6 +11,10 @@
     "gulp-autoprefixer": "^3.1.1",
     "gulp-less": "^3.3.0",
     "gulp-rename": "^1.2.2",
+    "lazy": "^1.0.11",
+    "less": "^2.7.1",
+    "lodash": "^4.17.2",
+    "punycode": "^2.0.1",
     "stupid-server": "^0.2.0"
   }
 }
