@@ -1,18 +1,28 @@
-.animation(@name, @width, @duration, @steps, @frames) {
+// Needs to be a whole number to prevent rounding drift/jitter in animations
+@line-height: 1;
+
+.ascii-anim {
+    display: inline-block;
+    font-family: monospace;
+    line-height: @line-height;
+    overflow: hidden;
+    white-space: pre;
+}
+
+.animation(@name, @height, @duration, @steps, @frames) {
 
     @keyframes @name {
       100% {
-          margin-left: unit(-1 * @width * @steps, ch);
+          margin-top: unit(-@line-height * (@height + 1) * @steps, em);
       }
     }
 
     @{name} {
-      font-family: monospace;
-      overflow: hidden;
-      display: inline-block;
-      white-space: pre;
+      &:extend(.ascii-anim);
+    }
 
-      width: unit(@width, ch);
+    @{name}, .ascii-anim.@{name} {
+      height: unit(@line-height * @height + 0.3, em);
       &:before {
         content: replace(replace(@frames, "\\", "\\", "g"), "\n", "\A ", "g");
         display: inline-block;
