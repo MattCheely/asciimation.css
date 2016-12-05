@@ -8,5 +8,5 @@ function buildDemo(element) {
     element.innerHTML = `<h2>&lt;${demoName}/&gt;</h2><div><${demoName} class="${classname}"/></div>`
 }
 
-const demos = document.getElementById("demos");
-Array.prototype.forEach.call(demos.children, buildDemo);
+const demoEl = document.getElementById("demos");
+Array.prototype.forEach.call(demoEl.children, buildDemo);
