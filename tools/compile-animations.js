@@ -20,37 +20,29 @@ function buildLessFile(name, width, duration, frameCount, content) {
 function convert(fileName) {
     const name = path.parse(fileName).name;
     const lines = fs.readFileSync(fileName).toString().split("\n");
-    const format = JSON.parse(lines[0]);;
-    let frameWidth = format.width;
+    const format = JSON.parse(lines[0]);
     const frameHeight = format.height;
     const duration = format.duration;
 
     let frameLines = _(lines)
-        .splice(2)
+        .slice(2)
         .filter((text, line) => {
             return ((line + 1) % (frameHeight + 1)) !== 0;
         }).value();
 
     const frameCount = (frameLines.length / frameHeight);
 
-    if (!frameWidth) {
-        frameWidth = _(frameLines)
-            .map(punycode.ucs2.decode)
-            .map(_.property('length'))
-            .max();
-    }
-
-    let content = _(frameLines)
-        .reduce((frames, text, line) => {
-            let outLine = (line % frameHeight);
-            frames[outLine] = (frames[outLine] || '') + text;
-            return frames;
-        }, [])
-        .join('\n');
+    let content = _.reduce(frameLines, (contentLines, frameLine, idx) => {
+        contentLines.push(frameLine);
+        if ((idx + 1) % frameHeight === 0) {
+            contentLines.push('');
+        }
+        return contentLines;
+    }, []).join('\n');
 
     return {
         outName: `${name}.less`,
-        content: buildLessFile(name, frameWidth, duration, frameCount, content)
+        content: buildLessFile(name, frameHeight, duration, frameCount, content)
     };
 }
 

@@ -17,13 +17,12 @@ To add an animation, create a new file in `src/animations` with your animation's
 
 *Line 1: JSON with animation parameters.*
 
-`height`: The height in lines of each animation frame (mandatory)  
-`duration`: The duration of the animation (e.g. 5s) (mandatory)  
-`width`: The width (in characters) of each frame. The animation builder will try to figure this out for you, even if you have some combining unicode characters, but if it doesn't work you can manually specify it here.
+`height`: The height in lines of each animation frame.
+`duration`: The duration of the animation (e.g. 5s).
 
 *Line 2: Ignored.*
 
-*Lines 3 and up: Frames, first-to-last, whith an ignored line between each frame.*
+*Lines 3 and up: Frames, first-to-last, whith an ignored line between frames.*
 
 Each line of each frame should be the same width. The animation builder will not
 pad them for you. Each frame must have the same height, in lines. Frames should be
