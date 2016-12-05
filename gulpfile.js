@@ -1,43 +1,45 @@
 var gulp = require('gulp');
-var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
-var rename = require('gulp-rename');
 var path = require('path');
 var stupidServer = require('stupid-server');
 var fs = require('fs');
+var os = require('os');
+var mustache = require('gulp-mustache');
 
 var compileAnimations = require('./tools/compile-animations');
 
-const lessOptions = {};
-const autoprefixOptions = {};
-
-gulp.task('main-css', () => {
-    gulp.src('src/style/main.less')
-        .pipe(less(lessOptions))
-        .pipe(autoprefixer(autoprefixOptions))
-        .pipe(rename('asciimation.css'))
-        .pipe(gulp.dest('dist/style'));
-});
+var tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'csstmp'));
+var tmpcss = path.join(tmpdir, 'asciimation.css');
 
 gulp.task('copy-demo', () => {
-    gulp.src('src/demo/*')
+    const demos = fs.readdirSync('src/animations')
+        .map((filePath) => {
+            return path.parse(filePath).name;
+        });
+
+    gulp.src('src/demo/*.html')
+        .pipe(mustache({demos: demos}))
+        .pipe(gulp.dest('dist/'));
+
+    gulp.src('src/demo/*.js')
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('generate-animations', () => {
-    if (!fs.existsSync('dist/style/')) {
-        fs.mkdirSync('dist/style/');
-    }
     const animationFiles = fs.readdirSync('src/animations')
         .map((name) => {
             return path.join('src/animations', name);
         });
-    compileAnimations(animationFiles, 'dist/style/asciimation.css');
+    compileAnimations(animationFiles, tmpcss, () => {
+        gulp.src(tmpcss)
+            .pipe(autoprefixer({}))
+            .pipe(gulp.dest('dist/style'));
+    });
 });
 
 gulp.task('host-watch', () => {
     stupidServer({path: path.join(__dirname, 'dist')}, () => {
-        let watcher = gulp.watch(['src/**', 'index.html'], ['default']);
+        let watcher = gulp.watch(['src/**'], ['default']);
         watcher.on('change', (event) => {
             console.log('Rebuilding...');
         });
@@ -45,5 +47,5 @@ gulp.task('host-watch', () => {
 });
 
 
-gulp.task('default', ['generate-animations', 'copy-demo']);
+gulp.task('default', ['copy-demo', 'generate-animations']);
 gulp.task('host', ['default', 'host-watch']);

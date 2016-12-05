@@ -61,9 +61,12 @@ function compileLess(lessFiles, callback) {
     });
 }
 
-module.exports = function (animationFiles, outputFile) {
+module.exports = function (animationFiles, outputFile, callback) {
     compileLess(animationFiles.map(convert), (css) => {
         fs.writeFileSync(outputFile, css);
+        if (callback) {
+            callback();
+        }
     });
 }
 

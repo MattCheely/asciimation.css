@@ -1,15 +1,6 @@
 <head>
     <link rel="stylesheet" href="style/asciimation.css"></link>
     <link rel="stylesheet" href="https://mattcheely.github.io/editor.css/style/editor.css"></link>
-    <style type="text/css">
-        #demos > * {
-            overflow: hidden;
-        }
-        .debug {
-            border: 1px solid blue;
-            overflow: visible;
-        }
-    </style>
 </head>
 <body class="hundred-col">
     <h1>asciimation.css</h1>
@@ -26,9 +17,9 @@
 
     <h1>Animations</h1>
     <div id="demos">
-        <div id="dance"></div>
-        <div id="roflcopter"></div>
-        <div id="tableflip"></div>
+        {{#demos}}
+            <div id="{{.}}"></div>
+        {{/demos}}
     </div>
     <script type="text/javascript" src="build-demos.js"></script>
 </body>
